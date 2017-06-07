@@ -1,0 +1,47 @@
+<% model_class = Tweet %>
+<p id="notice"><%= notice %></p>
+
+<%= form_tag(tweets_path, {:method=>"get"}) do %>
+  <%= radio_button_tag 'search_type', 'all', params[:search_type] == "all" %><%= label_tag "search_type_all", "all" %>
+  <%= radio_button_tag 'search_type', 'deleted', params[:search_type] == "deleted" %><%= label_tag "search_type_deleted", "deleted" %>
+  <%= submit_tag "Search", :name => nil %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:text) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:deleted_at) %></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tweets.each do |tweet| %>
+      <% user = tweet.twitter_user %>
+      <tr>
+        <td><%= link_to tweet.id, tweet_path(tweet), target: "_blank" %></td>
+        <td class="tweet_user_name">
+          <img src="<%= raw user.profile_image_url %>" alt="<%= user.name %>" title="<%= user.name %>" /><br />
+          <%= link_to user.name, tweets_path(params.permit(:search_type).merge(user_id: tweet.user_id)) %>
+        </td>
+        <td>
+          <%= auto_link(simple_format(tweet.body), :html => { :target => '_blank' }) %>
+          <% if params[:search_type] == "deleted" %>
+            <div>
+              <%= auto_link(simple_format(keshitter_media_urls(tweet)), :html => { :target => '_blank' }) %>
+            </div>
+          <% end %>
+        </td>
+        <td><%= link_to tweet.created_at.strftime("%Y-%m-%d %H:%M:%S"), twitter_status_url(screen_name: user.screen_name, status_id: tweet.status_id), target: "_blank" %></td>
+        <td><%= tweet.deleted_at.try(:strftime, "%Y-%m-%d %H:%M:%S") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= paginate @tweets %>

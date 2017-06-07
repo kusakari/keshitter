@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+<% twitter_user = @tweet.twitter_user %>
+<p>
+  <strong>Status:</strong>
+  <%= @tweet.status_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @tweet.user_id %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= twitter_user.name %>
+</p>
+
+<p>
+  <strong>Screen name:</strong>
+  <%= twitter_user.screen_name %>
+</p>
+
+<p>
+  <strong>Profile image url:</strong>
+  <%= twitter_user.profile_image_url %>
+</p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @tweet.body %>
+</p>
+
+<p>
+  <strong>Deleted at:</strong>
+  <%= @tweet.deleted_at %>
+</p>
+
+<p>
+  <strong>Created at:</strong>
+  <%= @tweet.created_at %>
+</p>
+
+<%= link_to 'Back', tweets_path %>
