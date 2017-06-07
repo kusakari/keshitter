@@ -10,6 +10,7 @@
 - あらかじめ https://dev.twitter.com/ で必要な値を取得しておいてください。
 
 以下を環境変数に設定してください。
+
 |キー名|値|
 |:--|:--|
 |CONSUMER_KEY|YOUR_CONSUMER_KEY|
@@ -20,6 +21,7 @@
 ## config/settings.yml
 
 |キー名|値|
+|:--|:--|
 |media_dir_name|メディアファイルを保存するディレクトリー名（public直下に作られます）|
 
 # アプリ起動
