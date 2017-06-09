@@ -36,6 +36,7 @@ def collect_media_urls(object)
   urls.compact
 end
 
+tries = 5
 begin
   streaming_client.user do |object|
     case object
@@ -78,5 +79,10 @@ rescue Twitter::Error::TooManyRequests => error
   sleep reset_in + 1
   retry
 rescue => ex
+  # https://github.com/sferik/twitter/issues/535
+  if ex.is_a?(EOFError) && (tries -= 1) > 0
+    sleep 5
+    retry
+  end
   Rails.logger.error "Error: #{ex.message}, " + %!#{ex.backtrace.join("\n")}!
 end
