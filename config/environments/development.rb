@@ -23,7 +23,7 @@ Rails.application.configure do
   else
     config.action_controller.perform_caching = false
 
-    config.cache_store = :null_store
+    config.cache_store = :dalli_store, "localhost:11211", {:namespace => "keshitter_#{Rails.env}", :compress => true}
   end
 
   # Don't care if the mailer can't send.

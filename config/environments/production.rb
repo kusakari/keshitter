@@ -56,6 +56,8 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
+  # If your servers are specified in ENV["MEMCACHE_SERVERS"] (e.g. on Heroku when using a third-party hosted addon), simply provide nil.
+  config.cache_store = :dalli_store, nil, {:namespace => "keshitter_#{Rails.env}", :compress => true}
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
