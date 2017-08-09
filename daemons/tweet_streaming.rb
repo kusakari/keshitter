@@ -59,7 +59,11 @@ begin
       end
       urls.each do |url|
         File.open(File.join(dir_path, File.basename(url)), 'wb') do |f|
-          f.write open(url).read
+          begin
+            f.write open(url).read
+          rescue => e
+            f.write ""
+          end
         end
       end
       Tweet.find_or_create_by(tweet_data)
