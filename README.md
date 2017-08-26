@@ -1,6 +1,5 @@
 # keshitter
 - Twitter TLを記録するアプリです。
-- 削除されたツイートだけを絞り込み表示することができます。
 
 # Environment
 - Ruby 2.4
