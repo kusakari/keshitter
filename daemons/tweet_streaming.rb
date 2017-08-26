@@ -23,11 +23,16 @@ def collect_media_urls(object)
       end
     end
     urls += object.urls.flat_map do |u|
-      case FastImage.type(u.url.to_s)
+      url = u.url.to_s
+      case FastImage.type(url)
       when :bmp, :gif, :jpeg, :png, :webm
         u.expanded_url.to_s
       else
-        nil
+        if url.start_with?("https://www.instagram.com/p/")
+          "#{url}media/?size=l"
+        else
+          nil
+        end
       end
     end
   rescue => ex
