@@ -42,7 +42,18 @@ def collect_media_urls(object)
 end
 
 begin
-  streaming_client.user do |object|
+  list_user_ids = Rails.cache.fetch(:list_user_ids, expires_in: 1.hour) do
+    client = Twitter::REST::Client.new({
+      consumer_key: Settings.consumer_key,
+      consumer_secret: Settings.consumer_secret,
+      access_token: Settings.access_token,
+      access_token_secret: Settings.access_token_secret,
+    })
+    list = client.owned_lists(count: 100).detect {|list| list.name == Settings.streaming_list_name }
+    client.list_members(list.id, count: 1000).map(&:id)
+  end
+#  streaming_client.user do |object|
+  streaming_client.filter(follow: list_user_ids.join(",")) do |object|
     case object
     when Twitter::Tweet
       next unless object.retweeted_status.nil?
