@@ -17,8 +17,12 @@ class TweetsController < ApplicationController
     if params[:search_type] == "deleted"
       tweet_ar = tweet_ar.where.not(deleted_at: nil)
     end
-    if params[:user_id].present?
-      tweet_ar = tweet_ar.where(user_id: params[:user_id])
+    if params[:search_text].present?
+      tweet_ar = tweet_ar.where("body LIKE ?", "%#{params[:search_text]}%")
+    end
+    tweet_ar = tweet_ar.where(user_id: params[:user_id]) if params[:user_id].present?
+    if params[:screen_name].present? && twitter_user = TwitterUser.where(screen_name: params[:screen_name]).first
+      tweet_ar = tweet_ar.where(user_id: twitter_user.user_id)
     end
     @tweets = tweet_ar.page(params[:page]).per(20)
   end

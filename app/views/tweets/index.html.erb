@@ -2,8 +2,16 @@
 <p id="notice"><%= notice %></p>
 
 <%= form_tag(tweets_path, {:method=>"get"}) do %>
-  <%= radio_button_tag 'search_type', 'all', params[:search_type] == "all" %><%= label_tag "search_type_all", "all" %>
-  <%= radio_button_tag 'search_type', 'deleted', params[:search_type] == "deleted" %><%= label_tag "search_type_deleted", "deleted" %>
+  <div>
+    <%= radio_button_tag :search_type, 'all', params[:search_type] == "all" %><%= label_tag "search_type_all", "all" %>
+    <%= radio_button_tag :search_type, 'deleted', params[:search_type] == "deleted" %><%= label_tag "search_type_deleted", "deleted" %>
+  </div>
+  <div>
+    text: <%= text_field_tag :search_text, params[:search_text] %>
+  </div>
+  <div>
+    user_id: <%= text_field_tag :user_id, params[:user_id] %> screen_name: <%= text_field_tag :screen_name, params[:screen_name] %>
+  </div>
   <%= submit_tag "Search", :name => nil %>
 <% end %>
 
